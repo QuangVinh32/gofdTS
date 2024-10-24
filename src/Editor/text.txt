@@ -1,0 +1,138 @@
+class EditorPolygon extends Phaser.Scene {
+    constructor() {
+        super("editPolygon");
+        this.points = [];
+        this.rectsOnEdges = [];
+        this.texts = [];
+        this.dragStartPos = null;
+        this.line = null;
+        this.isPaused = false;
+    }
+
+    preload() {
+        this.load.image("ball", "assets/images/ball.png");
+    }
+
+    create() {
+        this.input.on('pointerdown', this.addPoint, this);
+        this.matter.world.setBounds().disableGravity();
+        this.graphics = this.add.graphics();
+        this.keyQ = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.Q);
+        
+        this.drawPolygon();
+
+        const ball = this.matter.add.image(509, 290, "ball").setDisplaySize(10, 10);
+        ball.setCircle(5);
+        ball.setBounce(1);
+        ball.setFriction(0.001);
+
+        ball.setInteractive();
+        this.input.setDraggable(ball);
+
+        this.input.on('dragstart', (pointer, gameObject) => {
+            // gameObject.setTint(0xff0000);
+            this.dragStartPos = { x: gameObject.x, y: gameObject.y };
+            this.line = this.add.line(0, 0, gameObject.x, gameObject.y, pointer.x, pointer.y, 0xff00ff);
+            this.line.setLineWidth(2);
+        });
+
+        this.input.on('drag', (pointer, gameObject) => {
+            this.line.setTo(gameObject.x, gameObject.y, pointer.x, pointer.y);
+        });
+
+        this.input.on('dragend', (pointer, gameObject) => {
+            // gameObject.clearTint();
+            const directionX = pointer.x - this.dragStartPos.x;
+            const directionY = pointer.y - this.dragStartPos.y;
+
+            const velocityX = -directionX * 0.1;
+            const velocityY = -directionY * 0.1;
+
+            gameObject.setVelocity(velocityX, velocityY);
+            this.line.destroy();
+            this.line = null;
+        });
+
+    }
+
+    update() {
+        if (this.keyQ.isDown) {
+            this.isPaused = !this.isPaused; // Chuyển đổi trạng thái tạm dừng
+            console.log("Đã chuyển đổi tạm dừng:", this.isPaused);
+        }
+    }
+
+    addPoint(pointer) {
+        if (this.isPaused) return; // Ngăn chặn việc thêm điểm nếu đang tạm dừng
+
+        const newPoint = new Phaser.Math.Vector2(pointer.x, pointer.y);
+        this.points.push(newPoint);
+        this.drawPolygon();
+    }
+
+    drawPolygon() {
+        this.graphics.clear();
+        this.rectsOnEdges.forEach(rect => rect.destroy());
+        this.rectsOnEdges = [];
+        this.texts.forEach(text => text.destroy());
+        this.texts = [];
+
+        if (this.points.length > 1) {
+            this.graphics.lineStyle(2, 0x002bff, 1);
+            this.graphics.beginPath();
+            this.graphics.moveTo(this.points[0].x, this.points[0].y);
+
+            for (let i = 1; i < this.points.length; i++) {
+                this.graphics.lineTo(this.points[i].x, this.points[i].y);
+            }
+
+            this.graphics.lineTo(this.points[0].x, this.points[0].y);
+            this.graphics.strokePath();
+            this.drawRectanglesOnEdges();
+            this.displayCoordinates();
+        }
+    }
+    drawRectanglesOnEdges() {
+        for (let i = 0; i < this.points.length; i++) {
+            const pointA = this.points[i];
+            const pointB = this.points[(i + 1) % this.points.length];
+
+            const length = Phaser.Math.Distance.Between(pointA.x, pointA.y, pointB.x, pointB.y);
+            const angle = Phaser.Math.Angle.Between(pointA.x, pointA.y, pointB.x, pointB.y);
+            const height = 25;
+
+            const normalX = Math.cos(angle + Math.PI / 2);
+            const normalY = Math.sin(angle + Math.PI / 2);
+            const offsetX = normalX * height / 2;
+            const offsetY = normalY * height / 2;
+
+            const midPointX = (pointA.x + pointB.x) / 2;
+            const midPointY = (pointA.y + pointB.y) / 2;
+
+            const rect = this.add.rectangle(midPointX, midPointY, length, height, 0xff5500, 0.5);
+            rect.setPosition(midPointX + offsetX, midPointY + offsetY);
+
+            this.matter.add.gameObject(rect, {
+                shape: { type: 'rectangle', width: length, height: height },
+                angle: angle,
+                isStatic: true,
+                restitution: 0
+            });
+
+            this.rectsOnEdges.push(rect);
+        }
+    }
+
+    displayCoordinates() {
+        this.points.forEach(point => {
+            const text = this.add.text(point.x - 15, point.y - 15, `(${Math.round(point.x)}, ${Math.round(point.y)})`, {
+                fontSize: '12px',
+                fill: '#00ff00'
+            });
+            this.texts.push(text);
+        });
+    }
+}
+
+
+

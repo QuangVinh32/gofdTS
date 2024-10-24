@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Phaser Game</title>
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
+        <!-- thu vien -->
+        <script type="text/javascript" src="lib/phaser.min.js"></script>
+         <!-- mvc -->
+        <script type="text/javascript" src="src/Editor/EditorPolygon.js"></script>
+        <!-- DTO -->
+        <script type="text/javascript" src="src/DTOs/BallDTO.js"></script>
+        <script type="text/javascript" src="src/DTOs/ObstacleDTO.js"></script>
+        <script type="text/javascript" src="src/DTOs/LevelDTO.js"></script>
+        <script type="text/javascript" src="src/DTOs/DestinationDTO.js"></script>
+        <script type="text/javascript" src="src/DTOs/SettingDTO.js"></script>
+
+        <!-- View -->
+        <script type="text/javascript" src="src/Views/BallView.js"></script>
+        <script type="text/javascript" src="src/Views/ObstacleView.js"></script>
+        <script type="text/javascript" src="src/Views/LevelView.js"></script>
+        <script type="text/javascript" src="src/Views/DestinationView.js"></script>
+        <script type="text/javascript" src="src/Views/SettingView.js"></script>
+
+        <!-- Service -->
+        <script type="text/javascript" src="src/Services/BallService.js"></script>
+        <script type="text/javascript" src="src/Services/ObstacleService.js"></script>
+        <script type="text/javascript" src="src/Services/LevelService.js"></script>
+        <script type="text/javascript" src="src/Services/DestinationService.js"></script>
+        <script type="text/javascript" src="src/Services/SettingService.js"></script>
+
+        <!-- Controller -->
+        <script type="text/javascript" src="src/Controllers/BallController.js"></script>
+        <script type="text/javascript" src="src/Controllers/ObstacleController.js"></script>
+        <script type="text/javascript" src="src/Controllers/LevelController.js"></script>
+        <script type="text/javascript" src="src/Controllers/DestinationController.js"></script>
+        <script type="text/javascript" src="src/Controllers/SettingController.js"></script>
+         <!-- Scenes -->
+        <script type="text/javascript" src="src/Scenes/MainScene.js"></script>
+        <script type="text/javascript" src="src/Scenes/LoadingScene.js"></script>
+        <script type="text/javascript" src="src/Scenes/MenuLevelScene.js"></script>
+        <!-- file Level -->
+        <script type="text/javascript" src="src/Scenes/Levels/UIScene.js"></script>
+        <script type="text/javascript" src="src/Scenes/Levels/ChoiceScene.js"></script>
+        <script type="text/javascript" src="src/Scenes/Levels/ScoreboardScene.js"></script>
+        <script type="text/javascript" src="src/Scenes/Levels/LevelsScene.js"></script>
+        <!-- index -->
+        <script type="text/javascript" src="game.js"></script>
+        <style>
+            body {
+                margin: 0;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                height: 100vh;
+                background-color: black;
+            }
+            canvas {
+                border: 1px solid #fff;
+            }
+        </style>
+    </head>
+    <body>
+    </body>
+</html>

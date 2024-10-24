@@ -1,0 +1,22 @@
+{
+    "destinations": [
+        {
+            "id": 1,
+            "positionX": 1053,
+            "positionY": 346,
+            "radius": 6,
+            "origin": {"x": 0, "y": 0},
+            "shape": "circle",
+            "levelNumber": 1
+        },
+        {
+            "id": 2,
+            "positionX": 100,
+            "positionY": 200,
+            "radius": 6,
+            "origin": {"x": 0, "y": 0},
+            "shape": "circle",
+            "levelNumber": 2
+        }
+    ]
+}
